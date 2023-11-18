@@ -1,90 +1,135 @@
-import pygame as py
-from pygame.locals import *
 import time as ti
+import pygame as py
 import random as ra
-import ctypes as ct
+from pygame.locals import *
 
 nRES = (1184, 576)
 ok = True
 nT_WX = nT_HY = 32
+nMAXANIMALES = 5
+nMx = nMy = 0
 
-class Celdas(ct.Structure):
-    _fields_ = [
-        ('nT', ct.c_ubyte),  # Tipo de Tile/Baldosa
-        ('nD', ct.c_ubyte),  # Tile Disponible?
-        ('nS', ct.c_ubyte),  # 0 : No se pinta - # 1 : Si se pinta
-        ('nF', ct.c_ubyte),  # Fila de Mapa
-        ('nC', ct.c_ubyte),  # Columna de Mapa
-        ('nR', ct.c_ubyte),  # Recurso a Explotar:
-                            # 1:Acero
-                            # 2:Cobre
-                            # 3:Litio
-                            # 4:Butano
-        ('nQ', ct.c_ubyte)   # Cantidad del Recurso
-    ]
+def Init_PyGame():
+    py.init()
+    py.mouse.set_visible(True)
+    py.display.set_caption('')
+    return py.display.set_mode(nRES)
 
-class Accion():
+def Load_Image(sFile, transp=False):
+    try:
+        image = py.image.load(sFile)
+    except py.error:
+        raise SystemExit
+    image = image.convert()
+    if transp:
+        color = image.get_at((0, 0))
+        image.set_colorkey(color, RLEACCEL)
+    return image
+
+def Carga_Imagenes():
+    imagenes = []
+    imagenes.append(Load_Image('T01.png', False))
+    imagenes.append(Load_Image('T02.png', False))
+    imagenes.append(Load_Image('T03.png', False))
+    imagenes.append(Load_Image('T04.png', False))
+    imagenes.append(Load_Image('leon.png', False))
+    imagenes.append(Load_Image('cebra.png', False))
+    return imagenes
+
+class Organismo:
+    def __init__(self, x, y, vida, energia, velocidad):
+        self.x = x
+        self.y = y
+        self.vida = vida
+        self.energia = energia
+        self.velocidad = velocidad
+
+class Animal(Organismo):
+    def __init__(self, x, y, vida, energia, velocidad, especie, dieta):
+        super().__init__(x, y, vida, energia, velocidad)
+        self.especie = especie
+        self.dieta = dieta
+
+    def cazar(self):
+        # Implementa la lógica de caza del animal
+        pass
+
+class Planta(Organismo):
+    def __init__(self, x, y, vida, energia, velocidad, realiza_fotosintesis, se_reproduce):
+        super().__init__(x, y, vida, energia, velocidad)
+        self.realiza_fotosintesis = realiza_fotosintesis
+        self.se_reproduce = se_reproduce
+
+    def reproducirse(self):
+        # Implementa la lógica de reproducción de la planta
+        pass
+
+class Ambiente:
+    def __init__(self, temperatura, humedad, eventos_climaticos):
+        self.temperatura = temperatura
+        self.humedad = humedad
+        self.eventos_climaticos = eventos_climaticos
+
+    def afectar_ecosistema(self):
+        # Implementa cómo el ambiente afecta al ecosistema
+        pass
+
+class Ecosistema:
     def __init__(self):
-        self.aMap = [
-            [Celdas() for nC in range(nRES[0]//nT_WX)] for nF in range(nRES[1]//nT_HY)
-        ]
+        self.organismos = []
 
-    def Init_PyGame(self):
-        py.init()
-        py.mouse.set_visible(True)
-        py.display.set_caption('')
-        return py.display.set_mode(nRES)
+    def agregar_organismo(self, organismo):
+        self.organismos.append(organismo)
 
-    def Load_Image(self, sFile, transp=False):
-        try:
-            image = py.image.load(sFile)
-        except py.error:
-            raise SystemExit
-        image = image.convert()
-        if transp:
-            color = image.get_at((0, 0))
-            image.set_colorkey(color, RLEACCEL)
-        return image
+    def gestionar_ciclo_de_vida(self):
+        for i in self.organismos.copy():
+            if i.vida <= 0:
+                self.organismos.remove(i)
+                del self.organismos[self.organismos.index(i)]
+            else:
+                ti.sleep(3)
+                i.energia -= 1
+                if i.energia <= 0:
+                    i.vida -= 2
 
-    def Carga_Imagenes(self):
-        imagenes = []
-        imagenes.append(self.Load_Image('T01.png', False))
-        imagenes.append(self.Load_Image('T02.png', False))
-        imagenes.append(self.Load_Image('T03.png', False))
-        return imagenes
 
-    def Init_Mapa(self):
-        for nF in range(0, nRES[1] // nT_HY):
-            for nC in range(0, nRES[0] // nT_WX):
-                self.aMap[nF][nC].nT = ra.randint(0,2)
-                self.aMap[nF][nC].nD = 1  # 1: Disponible - 0: No Disponible
-                self.aMap[nF][nC].nS = 0  # No se pinta por Defecto
-                self.aMap[nF][nC].nF = nF  # Fila de la Celda
-                self.aMap[nF][nC].nC = nC  # Colu de la Celda
-                self.aMap[nF][nC].nR = self.aMap[nF][nC].nT
-                self.aMap[nF][nC].nQ = ra.randint(100, 1000)  # Unidades de RR
-        return
+    def gestionar_interacciones(self):
+        # Implementa la lógica para gestionar las interacciones entre organismos en el ecosistema
+        pass
+
+    def mantener_equilibrio_ecologico(self):
+        # Implementa la lógica para mantener el equilibrio ecológico del ecosistema
+        pass
 
     def Pinta_Mapa(self, sWin, aFig):
-        for nF in range(0, nRES[1] // nT_HY):
-            for nC in range(0, nRES[0] // nT_WX):
-                if nF <= 10 and nC <= 18:  
-                    if self.aMap[nF][nC].nT == 0:
-                        sWin.blit(aFig[0], (nC * nT_HY, nF * nT_WX))  
-                    elif self.aMap[nF][nC].nT == 1:
-                        sWin.blit(aFig[1], (nC * nT_HY, nF * nT_WX)) 
-                    else:
-                        sWin.blit(aFig[0], (nC * nT_HY, nF * nT_WX))                    
+        for nF in range(0, nRES[1]):
+            for nC in range(0, nRES[0]):
+                sWin.blit(aFig[0], (nC , nF))  
+        return 
     
-        py.display.flip()
+    def Pinta_Organismos(self, sWin, aFig):
+        for i in self.organismos:
+            if i.especie == "León" and i.vida > 0:
+                sWin.blit(aFig[4], (i.x, i.y))
+            if i.especie == "Cebra" and i.vida > 0:
+                sWin.blit(aFig[5], (i.x , i.y))
 
-Programa = Accion()
-sWin = Programa.Init_PyGame()
-aFig = Programa.Carga_Imagenes()
-Programa.Init_Mapa()
+
+León = Animal(ra.randint(0,1184), ra.randint(0,576), 2, 4, 1, "León", "Carnivoro")
+Cebra = Animal(ra.randint(0,1184), ra.randint(0,576), 6, 3, 1, "Cebra", "Hervívoro")
+Programa = Ecosistema()
+Programa.agregar_organismo(León)
+Programa.agregar_organismo(Cebra)
+sWin = Init_PyGame()
+aFig = Carga_Imagenes()
+
 
 while ok:
     for e in py.event.get():
         if e.type == QUIT:
             ok = False
     Programa.Pinta_Mapa(sWin, aFig)
+    Programa.gestionar_ciclo_de_vida()
+    Programa.Pinta_Organismos(sWin, aFig)
+    py.display.flip()
+
