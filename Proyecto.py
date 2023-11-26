@@ -50,17 +50,18 @@ def Carga_Imagenes():
     return imagenes
 
 class Organismo:
-    def __init__(self, x, y, vida, energia, velocidad, especie):
+    def __init__(self, x, y, vida, energia, agua, velocidad, especie):
         self.x = x
         self.y = y
         self.vida = vida
         self.energia = energia
+        self.agua = agua 
         self.velocidad = velocidad
         self.especie = especie
 
 class Animal(Organismo):
-    def __init__(self, x, y, vida, energia, velocidad, especie, genero, dieta):
-        super().__init__(x, y, vida, energia, velocidad, especie)
+    def __init__(self, x, y, vida, energia, agua, velocidad, especie, genero, dieta):
+        super().__init__(x, y, vida, energia, agua, velocidad, especie)
         self.genero = genero
         self.dieta = dieta
 
@@ -77,8 +78,8 @@ class Animal(Organismo):
         Programa.agregar_organismo(cria)
 
 class Planta(Organismo):
-    def __init__(self, x, y, vida, energia, velocidad, especie, realiza_fotosintesis, se_reproduce):
-        super().__init__(x, y, vida, energia, velocidad, especie)
+    def __init__(self, x, y, vida, energia, agua, velocidad, especie, realiza_fotosintesis, se_reproduce):
+        super().__init__(x, y, vida, energia, agua, velocidad, especie)
         self.realiza_fotosintesis = realiza_fotosintesis
         self.se_reproduce = se_reproduce
 
@@ -91,9 +92,6 @@ class Ambiente:
         self.temperatura = temperatura
         self.humedad = humedad
         self.clima = clima
-
-    def afectar_ecosistema(self):
-        pass 
 
 class Ecosistema():
     def __init__(self):
@@ -112,9 +110,15 @@ class Ecosistema():
             if i.vida <= 0:
                 self.organismos.remove(i)
             else:
-                i.energia -= 1
-                if i.energia <= 0:
+                if i.energia > 0:
+                    i.energia -= 1
+                else:
                     i.vida -= 2
+                if i.agua > 0:
+                    i.agua -= 1
+                else:
+                    i.vida -= 3
+
 
     def gestionar_interacciones(self):
         for i in range(len(self.organismos)):
@@ -149,8 +153,25 @@ class Ecosistema():
                 organismo1.reproducirse()
 
 
-    def mantener_equilibrio_ecologico(self):
-        pass
+    def afectar_ecosistema(self, clima):
+        for i in self.organismos:
+            if isinstance(i, Animal):
+                if clima.clima == "Nieve":
+                    i.energia -= 7
+                    i.agua += 1
+                if clima.clima == "Lluvia":
+                    i.energia -= 4
+                    i.agua += 2
+            if isinstance(i, Planta):
+                if clima.clima == "Nieve":
+                    i.energia -= 2
+
+                if clima.clima == "Lluvia":
+                    i.energia += 2
+                    i.agua += 4
+                    
+            if i.energia > 100: i.energia = 100
+            if i.agua > 100: i.agua = 100
 
     def cambiar_clima(self):
         climas = len(self.ambientes)-1
@@ -227,13 +248,13 @@ class Ecosistema():
             
 
 
-Leona = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 1, "León", "Hembra", "Carnivoro")
-León = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 1, "León", "Macho", "Carnivoro")
-Cebra = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 1, "Cebra", "Macho", "Hervívoro")
-Cebra2 = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 1, "Cebra", "Hembra", "Hervívoro")
-Tallo = Planta(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 0, "Tallo", "si", "si")
-Abeja = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 1, "Abeja", "Macho", "Polen")
-Abeja2 = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 1, "Abeja", "Hembra", "Polen")
+Leona = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "León", "Hembra", "Carnivoro")
+León = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "León", "Macho", "Carnivoro")
+Cebra = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Cebra", "Macho", "Hervívoro")
+Cebra2 = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Cebra", "Hembra", "Hervívoro")
+Tallo = Planta(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 0, "Tallo", "si", "si")
+Abeja = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Abeja", "Macho", "Polen")
+Abeja2 = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Abeja", "Hembra", "Polen")
 Soleado = Ambiente(30, 25, "Sol")
 Lluvia = Ambiente(15, 90, "Lluvia")
 Nieve = Ambiente(-15, 100, "Nieve")
@@ -263,11 +284,12 @@ while ok:
         clima = Programa.cambiar_clima()
     Programa.Pinta_Mapa(sWin, aFig, clima)
     Programa.gestionar_ciclo_de_vida()
-    Programa.gestionar_interacciones()
     Programa.Pinta_Organismos(sWin, aFig)
+    Programa.gestionar_interacciones()
+    Programa.afectar_ecosistema(clima)
 
     for organismo in Programa.organismos:
-        print(f"{organismo.especie} en la posición ({organismo.x}, {organismo.y}) - Vida: {organismo.vida}, Energía: {organismo.energia}")
+        print(f"{organismo.especie} en la posición ({organismo.x}, {organismo.y}) - Vida: {organismo.vida}, Energía: {organismo.energia}, Reservas de agua: {organismo.agua}")
 
     py.display.flip()
     reloj.tick(1)
