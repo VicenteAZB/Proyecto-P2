@@ -29,17 +29,24 @@ def Load_Image(sFile, transp=False):
 
 def Carga_Imagenes():
     imagenes = []
-    imagenes.append(Load_Image('pasto.png', False))
-    imagenes.append(Load_Image('tierra.png', False))
-    imagenes.append(Load_Image('agua.png', False))
-    imagenes.append(Load_Image('agua.png', False))
-    imagenes.append(Load_Image('leon.png', True))
-    imagenes.append(Load_Image('leona.png', True))
-    imagenes.append(Load_Image('cebra.png', True))
-    imagenes.append(Load_Image('planta1.png', True))
-    imagenes.append(Load_Image('abeja.png', True))
-    imagenes.append(Load_Image('abeja2.png', True))
-    imagenes.append(Load_Image('cebra2.png', True))
+    imagenes.append(Load_Image('pasto.png', False))         #0
+    imagenes.append(Load_Image('tierra.png', False))        #1  
+    imagenes.append(Load_Image('agua.png', False))          #2
+    imagenes.append(Load_Image('agua.png', False))          #3
+    imagenes.append(Load_Image('leon.png', True))           #4
+    imagenes.append(Load_Image('leona.png', True))          #5
+    imagenes.append(Load_Image('cebra.png', True))          #6  
+    imagenes.append(Load_Image('planta1.png', True))        #7
+    imagenes.append(Load_Image('abeja.png', True))          #8
+    imagenes.append(Load_Image('abeja2.png', True))         #9
+    imagenes.append(Load_Image('cebra2.png', True))         #10
+    imagenes.append(Load_Image('pastonieve.png', False))    #11
+    imagenes.append(Load_Image('aguanieve.png', False))     #12
+    imagenes.append(Load_Image('tierranieve.png', False))   #13
+    imagenes.append(Load_Image('pastolluvia.png', False))   #14
+    imagenes.append(Load_Image('agualluvia.png', False))    #15
+    imagenes.append(Load_Image('tierralluvia.png', False))  #16
+    imagenes.append(Load_Image('lluvia.png', False))  #17
     return imagenes
 
 class Organismo:
@@ -86,7 +93,7 @@ class Ambiente:
         self.clima = clima
 
     def afectar_ecosistema(self):
-        pass
+        pass 
 
 class Ecosistema():
     def __init__(self):
@@ -117,7 +124,7 @@ class Ecosistema():
                 distancia = math.sqrt((organismo1.x - organismo2.x)**2 + (organismo1.y - organismo2.y)**2)
                 if distancia < 32:
                     self.Cazadores_y_Presas(organismo1, organismo2)
-                if distancia < 12:
+                if distancia < 32:
                     self.Reproducción(organismo1, organismo2)
 
     def Cazadores_y_Presas(self, organismo1, organismo2):
@@ -145,37 +152,45 @@ class Ecosistema():
     def mantener_equilibrio_ecologico(self):
         pass
 
-    def Pinta_Mapa(self, sWin, aFig):
-            if ti.time() >= self.tiempo: 
-                clima = self.ambientes[ra.randint(0, 2)]
-                self.tiempo += 1
+    def cambiar_clima(self):
+        climas = len(self.ambientes)-1
+        print(climas)
+        if climas == 0:
+            clima = self.ambientes[0]
+        else:
+            clima = self.ambientes[ra.randint(0, climas)]
+            self.tiempo += 10
+        return clima
 
-            for nF in range(0, nRES[1]//celda):
-                for nC in range(0, nRES[0]//celda):
-                    if isinstance(clima, Ambiente):
-                        if clima.clima == "Sol":
-                            if nF <= 448//celda and nC < 896//celda: 
-                                sWin.blit(aFig[0], (nC*celda , nF*celda))  
-                            elif nF > 448//celda and nC < 896//celda:
-                                sWin.blit(aFig[2], (nC*celda , nF*celda))
-                            else:
-                                sWin.blit(aFig[1], (nC*celda , nF*celda))
+    def Pinta_Mapa(self, sWin, aFig, clima):
+        for nF in range(0, nRES[1]//celda):
+            for nC in range(0, nRES[0]//celda):
+                if isinstance(clima, Ambiente):
+                    if clima.clima == "Sol":
+                        if nF <= 448//celda and nC < 896//celda: 
+                            sWin.blit(aFig[0], (nC*celda , nF*celda))  
+                        elif nF > 448//celda and nC < 896//celda:
+                            sWin.blit(aFig[2], (nC*celda , nF*celda))
+                        else:
+                            sWin.blit(aFig[1], (nC*celda , nF*celda))
 
-                        if clima.clima == "Lluvia":
-                            if nF <= 448//celda and nC < 896//celda: 
-                                sWin.blit(aFig[2], (nC*celda , nF*celda))  
-                            elif nF > 448//celda and nC < 896//celda:
-                                sWin.blit(aFig[1], (nC*celda , nF*celda))
-                            else:
-                                sWin.blit(aFig[0], (nC*celda , nF*celda))
+                    if clima.clima == "Lluvia":
+                        if nF <= 448//celda and nC < 896//celda: 
+                            sWin.blit(aFig[14], (nC*celda , nF*celda))  
+                        elif nF > 448//celda and nC < 896//celda:
+                            sWin.blit(aFig[15], (nC*celda , nF*celda))
+                        else:
+                            sWin.blit(aFig[16], (nC*celda , nF*celda))
+                            for i in range(0, 1100):
+                                sWin.blit(aFig[17], (ra.randint(0, nRES[0]),ra.randint(0, nRES[1]))) 
         
-                        if clima.clima == "Nieve":
-                            if nF <= 448//celda and nC < 896//celda: 
-                                sWin.blit(aFig[1], (nC*celda , nF*celda))  
-                            elif nF > 448//celda and nC < 896//celda:
-                                sWin.blit(aFig[2], (nC*celda , nF*celda))
-                            else:
-                                sWin.blit(aFig[0], (nC*celda , nF*celda))
+                    if clima.clima == "Nieve":
+                        if nF <= 448//celda and nC < 896//celda: 
+                            sWin.blit(aFig[11], (nC*celda , nF*celda))  
+                        elif nF > 448//celda and nC < 896//celda:
+                            sWin.blit(aFig[12], (nC*celda , nF*celda))
+                        else:
+                            sWin.blit(aFig[13], (nC*celda , nF*celda))
 
     def Pinta_Organismos(self, sWin, aFig):
         for i in self.organismos:
@@ -235,13 +250,18 @@ Programa.agregar_ambientes(Lluvia)
 Programa.agregar_ambientes(Nieve)
 sWin = Init_PyGame()
 aFig = Carga_Imagenes()
+tiempo_inicio = ti.time()
 reloj = py.time.Clock()
 
 while ok:
+    tiempo_final= ti.time()
+    tiempo_transcurrido = tiempo_final - tiempo_inicio
     for e in py.event.get():
         if e.type == QUIT:
             ok = False
-    Programa.Pinta_Mapa(sWin, aFig)
+    if tiempo_transcurrido >= Programa.tiempo:
+        clima = Programa.cambiar_clima()
+    Programa.Pinta_Mapa(sWin, aFig, clima)
     Programa.gestionar_ciclo_de_vida()
     Programa.gestionar_interacciones()
     Programa.Pinta_Organismos(sWin, aFig)
@@ -251,5 +271,6 @@ while ok:
 
     py.display.flip()
     reloj.tick(1)
+py.quit()
     
 
