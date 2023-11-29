@@ -83,8 +83,8 @@ class Animal(Organismo):
         self.dieta = dieta
 
     def moverse(self):
-        self.x += ra.choice([-32, 0, 32]) * self.velocidad
-        self.y += ra.choice([-32, 0, 32]) * self.velocidad
+        self.x += ra.choice([-celda, 0, celda]) * self.velocidad
+        self.y += ra.choice([-celda, 0, celda]) * self.velocidad
 
     def cazar(self):
         self.energia += 30
@@ -106,7 +106,7 @@ class Planta(Organismo):
         if self.realiza_fotosintesis == "si":
             self.energia += 3
     def reproducirse(self):
-        cria = Planta(self.x + ra.choice([-32, 32]), self.y + ra.choice([-32, 32]), 100, 100, 100, 0, self.especie, self.realiza_fotosintesis, self.se_reproduce)
+        cria = Planta(self.x + ra.choice([-celda, celda]), self.y + ra.choice([-celda, celda]), 100, 100, 100, 0, self.especie, self.realiza_fotosintesis, self.se_reproduce)
         Programa.agregar_organismo(cria)
     def tomar_agua(self):
         self.agua += 10
@@ -153,9 +153,9 @@ class Ecosistema():
                 organismo1 = self.organismos[i]
                 organismo2 = self.organismos[j]
                 distancia = math.sqrt((organismo1.x - organismo2.x)**2 + (organismo1.y - organismo2.y)**2)
-                if distancia < 32:
+                if distancia < celda:
                     self.Cazadores_y_Presas(organismo1, organismo2)
-                if distancia < 32:
+                if distancia < celda:
                     if len(self.organismos) <= 30:
                         a = ra.randint(0,2)
                         if a == 1:
@@ -311,12 +311,12 @@ class Ecosistema():
                        
     def Pinta_Organismos(self, sWin, aFig):
         for i in self.organismos:
-            if i.x < 0 : i.x += 32 * i.velocidad
-            if i.y < 0 : i.y += 32 * i.velocidad 
-            if i.x > 1152: i.x += -32 * i.velocidad 
-            if i.x > 896 and i.y > 544: i.y += -32 * i.velocidad 
-            if i.x < 896 and i.y > 448: i.y += -32 * i.velocidad
-            if i.x < 896 and i.y > 448: i.x +=  32 * i.velocidad
+            if i.x < 0 : i.x += celda * i.velocidad
+            if i.y < 0 : i.y += celda * i.velocidad 
+            if i.x > 1152: i.x += -celda * i.velocidad 
+            if i.x > 896 and i.y > 544: i.y += -celda * i.velocidad 
+            if i.x < 896 and i.y > 448: i.y += -celda * i.velocidad
+            if i.x < 896 and i.y > 448: i.x +=  celda * i.velocidad
 
             if i.especie == "León" and i.vida > 0 and i.genero == "Macho":
                 sWin.blit(aFig[4], (i.x, i.y))
@@ -376,55 +376,48 @@ class Ecosistema():
             for i, linea in enumerate(lineas):
                 texto = fuente.render(linea.strip(), True, (255, 255, 255))
                 sWin.blit(texto, (1224, 10 + i * 20))  
+        
 
-            
-León = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "León", "Macho", "Carnivoro")
-Leona = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "León", "Hembra", "Carnivoro")
-Lobo = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Lobo", "Macho", "Carnivoro")
-Loba = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Lobo", "Hembra", "Carnivoro")
-Cebra = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Cebra", "Macho", "Hervívoro")
-Cebra2 = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Cebra", "Hembra", "Hervívoro")
-Conejo = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Conejo", "Macho", "Hervívoro")
-Coneja = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Conejo", "Hembra", "Hervívoro")
-jirafa = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Jirafa", "Macho", "Hervívoro")
-Jirafa2 = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Jirafa", "Hembra", "Hervívoro")
-Tallo = Planta(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 0, "Tallo", "si", "si")
-Trigo = Planta(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 0, "Trigo", "si", "si")
-Orégano = Planta(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 0, "Orégano", "si", "si")
-Lavanda = Planta(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 0, "Lavanda", "si", "si")
-Girasol = Planta(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 0, "Girasol", "si", "si")
-Abeja = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Abeja", "Macho", "Polen")
-Abeja2 = Animal(ra.randint(0,limitX)*32, ra.randint(0,limitY)*32, 100, 100, 100, 1, "Abeja", "Hembra", "Polen")
-Soleado = Ambiente(30, 25, "Sol")
-Lluvia = Ambiente(15, 90, "Lluvia")
-Nieve = Ambiente(-15, 100, "Nieve")
+organismos = [
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "León", "Macho", "Carnivoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "León", "Hembra", "Carnivoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Lobo", "Macho", "Carnivoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Lobo", "Hembra", "Carnivoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Cebra", "Macho", "Hervívoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Cebra", "Hembra", "Hervívoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Conejo", "Macho", "Hervívoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Conejo", "Hembra", "Hervívoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Jirafa", "Macho", "Hervívoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Jirafa", "Hembra", "Hervívoro"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Abeja", "Macho", "Polen"),
+    Animal(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 1, "Abeja", "Hembra", "Polen"),
+    Planta(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 0, "Tallo", "si", "si"),
+    Planta(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 0, "Trigo", "si", "si"),
+    Planta(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 0, "Orégano", "si", "si"),
+    Planta(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 0, "Lavanda", "si", "si"),
+    Planta(ra.randint(0, limitX) * celda, ra.randint(0, limitY) * celda, 100, 100, 100, 0, "Girasol", "si", "si")
+]
+
+ambientes = [
+    Ambiente(30, 25, "Sol"),
+    Ambiente(15, 90, "Lluvia"),
+    Ambiente(-15, 100, "Nieve")
+]
+
 Programa = Ecosistema()
-Programa.agregar_organismo(León)
-Programa.agregar_organismo(Leona)
-Programa.agregar_organismo(Lobo)
-Programa.agregar_organismo(Loba)
-Programa.agregar_organismo(Conejo)
-Programa.agregar_organismo(Coneja)
-Programa.agregar_organismo(jirafa)
-Programa.agregar_organismo(Jirafa2)
-Programa.agregar_organismo(Cebra)
-Programa.agregar_organismo(Cebra2)
-Programa.agregar_organismo(Tallo)
-Programa.agregar_organismo(Trigo)
-Programa.agregar_organismo(Orégano)
-Programa.agregar_organismo(Lavanda)
-Programa.agregar_organismo(Girasol)
-Programa.agregar_organismo(Abeja)
-Programa.agregar_organismo(Abeja2)
-Programa.agregar_ambientes(Soleado)
-Programa.agregar_ambientes(Lluvia)
-Programa.agregar_ambientes(Nieve)
+
+for i in range(len(organismos)):
+    Programa.agregar_organismo(organismos[i])
+for i in range(len(ambientes)):
+    Programa.agregar_ambientes(ambientes[i])
+
 sWin = Init_PyGame()
 aFig = Carga_Imagenes()
 tiempo_inicio = ti.time()
 reloj = py.time.Clock()
 
 while ok:
+
     tiempo_final= ti.time()
     tiempo_transcurrido = tiempo_final - tiempo_inicio
     for e in py.event.get():
@@ -432,6 +425,7 @@ while ok:
             ok = False
     if tiempo_transcurrido >= Programa.tiempo:
         clima = Programa.cambiar_clima()
+
     Programa.Pinta_Mapa(sWin, aFig, clima)
     Programa.gestionar_ciclo_de_vida()
     Programa.Pinta_Organismos(sWin, aFig)
@@ -445,6 +439,7 @@ while ok:
             else:
                 archivo.write(f"Datos de {organismo.especie}: ")
             archivo.write(f"Posición ({organismo.x}, {organismo.y}), Vida: {organismo.vida}, Energía: {organismo.energia}, Reservas de agua: {organismo.agua}\n")
+
     Programa.mostrar_registros_pantalla(sWin)
     py.display.flip()
     reloj.tick(1)

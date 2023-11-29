@@ -1,16 +1,20 @@
-Datos de León Macho: Posición (1056, 288), Vida: 100, Energía: 60, Reservas de agua: 40
-Datos de León Hembra: Posición (992, 512), Vida: 100, Energía: 50, Reservas de agua: 98
-Datos de Lobo Macho: Posición (1088, 288), Vida: 120, Energía: 80, Reservas de agua: 40
-Datos de Lobo Hembra: Posición (480, 448), Vida: 100, Energía: 50, Reservas de agua: 80
-Datos de Conejo Macho: Posición (896, 128), Vida: 60, Energía: 50, Reservas de agua: 40
-Datos de Conejo Hembra: Posición (1088, 352), Vida: 60, Energía: 80, Reservas de agua: 40
-Datos de Jirafa Macho: Posición (576, 64), Vida: 100, Energía: 50, Reservas de agua: 40
-Datos de Jirafa Hembra: Posición (320, 160), Vida: 100, Energía: 50, Reservas de agua: 40
-Datos de Cebra Macho: Posición (864, 224), Vida: 100, Energía: 50, Reservas de agua: 40
-Datos de Cebra Hembra: Posición (736, 96), Vida: 100, Energía: 50, Reservas de agua: 40
-Datos de Tallo: Posición (896, 128), Vida: 100, Energía: 80, Reservas de agua: 80
-Datos de Trigo: Posición (352, 96), Vida: 100, Energía: 80, Reservas de agua: 80
-Datos de Orégano: Posición (1056, 384), Vida: 95, Energía: 80, Reservas de agua: 80
-Datos de Lavanda: Posición (992, 0), Vida: 100, Energía: 80, Reservas de agua: 80
-Datos de Girasol: Posición (352, 96), Vida: 100, Energía: 80, Reservas de agua: 80
-Datos de Abeja Hembra: Posición (576, 160), Vida: 100, Energía: 40, Reservas de agua: 60
+Datos de León Macho: Posición (480, 416), Vida: 100, Energía: 24, Reservas de agua: 76
+Datos de León Hembra: Posición (32, 192), Vida: 100, Energía: 24, Reservas de agua: 26
+Datos de Lobo Macho: Posición (800, 0), Vida: 100, Energía: 24, Reservas de agua: 26
+Datos de Lobo Hembra: Posición (224, 160), Vida: 100, Energía: 24, Reservas de agua: 26
+Datos de Cebra Macho: Posición (160, 320), Vida: 100, Energía: 24, Reservas de agua: 76
+Datos de Cebra Hembra: Posición (576, 352), Vida: 100, Energía: 24, Reservas de agua: 96
+Datos de Conejo Macho: Posición (-32, 64), Vida: 100, Energía: 24, Reservas de agua: 26
+Datos de Conejo Hembra: Posición (768, 352), Vida: 100, Energía: 72, Reservas de agua: 76
+Datos de Jirafa Macho: Posición (608, 224), Vida: 100, Energía: 24, Reservas de agua: 26
+Datos de Jirafa Hembra: Posición (672, 64), Vida: 100, Energía: 24, Reservas de agua: 26
+Datos de Abeja Macho: Posición (800, 256), Vida: 100, Energía: 46, Reservas de agua: 76
+Datos de Abeja Hembra: Posición (896, 384), Vida: 100, Energía: 46, Reservas de agua: 88
+Datos de Tallo: Posición (896, 384), Vida: 95, Energía: 78, Reservas de agua: 88
+Datos de Trigo: Posición (832, 224), Vida: 100, Energía: 78, Reservas de agua: 88
+Datos de Orégano: Posición (32, 160), Vida: 100, Energía: 78, Reservas de agua: 88
+Datos de Lavanda: Posición (96, 0), Vida: 100, Energía: 78, Reservas de agua: 88
+Datos de Girasol: Posición (736, 288), Vida: 95, Energía: 78, Reservas de agua: 88
+Datos de Girasol: Posición (704, 320), Vida: 95, Energía: 78, Reservas de agua: 88
+Datos de Tallo: Posición (928, 416), Vida: 100, Energía: 100, Reservas de agua: 100
+Datos de Tallo: Posición (864, 352), Vida: 100, Energía: 100, Reservas de agua: 96
